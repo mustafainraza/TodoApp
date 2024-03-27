@@ -1,8 +1,9 @@
 <div class="container">
-  <br><br>
+  <app-todo-selected-list-item *ngIf="routeId && selectedTask" [task_id]="routeId"></app-todo-selected-list-item>
+  <br><br>  
   <div class="row searchbar">
     <div class="col-auto">
-      <label for="search" class="col-form-label">Tasks</label>
+      <label for="search" class="col-form-label">  Search {{ !(selectedTask && routeId) ? 'Tasks': 'Subtasks' }}</label>
     </div>
     <div class="col-auto">
       <input #search type="text" class="form-control" (input)="searchquery(search.value)">
