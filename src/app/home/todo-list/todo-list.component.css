@@ -1,0 +1,32 @@
+table, .searchbar {
+  margin: auto;
+  width: 80%;
+}
+
+.tag-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tag {
+  background-color: #0056b3;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 7px;
+  font-size: 13px;
+}
+
+.tag-column {
+  width: 200px;
+}
+
+.icon {
+  margin: 0.20rem;
+}
+
+.hover-effect {
+  background-color: black;
+  color: white; 
+}

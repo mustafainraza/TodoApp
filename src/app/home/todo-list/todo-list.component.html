@@ -1,0 +1,39 @@
+<div class="container">
+  <br><br>
+  <div class="row searchbar">
+    <div class="col-auto">
+      <label for="search" class="col-form-label">Tasks</label>
+    </div>
+    <div class="col-auto">
+      <input #search type="text" class="form-control" (input)="searchquery(search.value)">
+    </div>
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col ">Tags</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>      
+        <tr *ngFor="let task of filteredTask; let i = index" (click)="enter(task.id)">
+          <th scope="row"> {{ task.id }} </th>
+          <td> {{ task.title }}</td>
+          <td> {{ task.description }}</td>
+          <td>
+            <div class="tag-list">
+              <span class="tag">{{ task.temp_tags[0] }}</span>
+            </div>
+          </td>
+          <td>
+            <i class="fas fa-edit icon" (click)="editTask(task.id)"></i>
+            <i class="fas fa-trash-alt icon" (click)="deleteTask(task.id)"></i>
+          </td>
+        </tr>      
+    </tbody>
+  </table>
+</div>
