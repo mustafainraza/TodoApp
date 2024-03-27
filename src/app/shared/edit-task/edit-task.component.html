@@ -1,3 +1,116 @@
-<p>
-  edit-task works!
-</p>
+<div class="container-fluid">
+  <div class="row fixed-top">
+    <button class="btn btn-secondary" type="button" (click)="goBack()">Back</button>
+  </div>
+</div>
+<div class="container" [ngStyle]="{'margin-top': '50px'}">
+  <div class="row">
+    <div class="col-xs-12">
+      <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+        <h2>Task</h2>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="title">Title</label>
+              <input 
+                type="text"  
+                class="form-control" 
+                id="title" 
+                formControlName="title" 
+                [readOnly]="formDisabled"
+              >
+              <div *ngIf="taskForm.get('title')?.invalid && taskForm.get('title')?.touched" [ngStyle]="{'color': 'red'}">Required</div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="description">Description</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="description" 
+                formControlName="description" 
+                [readOnly]="formDisabled"
+              >
+                <div *ngIf="taskForm.get('description')?.invalid && taskForm.get('description')?.touched" [ngStyle]="{'color': 'red'}">Required</div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <button class="btn btn-primary" type="button" (click)="onChangeSubTaskVisibility()">{{showSubTasks}} Sub Tasks</button>
+        <hr>
+        <br>
+        <br>
+        <div class="row" *ngIf="showSubTasks === 'Hide'">
+          <h2>SubTasks</h2>
+          <div class="col-xs-12" formArrayName="subTasks">
+            <div class="row" 
+              *ngFor="let subTaskControl of subTasksForm.controls; let i = index"
+              [formGroupName]="i"
+            >
+              <div class="row">
+                <div class="col-xs-4">
+                  <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title" formControlName="title" [readOnly]="formDisabled">
+                    <div 
+                      *ngIf="subTasksForm.controls[i].get('title')?.invalid && subTasksForm.controls[i].get('title')?.touched" 
+                      [ngStyle]="{'color': 'red'}"
+                    >
+                      Required
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-4">
+                  <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" class="form-control" id="description" formControlName="description" [readOnly]="formDisabled">
+                    <div 
+                      *ngIf="subTasksForm.controls[i].get('description')?.invalid && subTasksForm.controls[i].get('description')?.touched" 
+                      [ngStyle]="{'color': 'red'}"
+                    >
+                      Required
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-2">
+                <button 
+                  type="button" 
+                  class="btn btn-danger" 
+                  (click)="onRemoveSubTask(i)" 
+                  *ngIf="!formDisabled"
+                  [ngStyle]="{'margin-top': '10px', 'margin-bottom': '10px'}"
+                >
+                  Remove
+                </button>
+              </div>
+              <br>
+              <br>
+              <hr>
+              <br>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <button class="btn btn-success" (click)="onAddSubTask()" type="button" *ngIf="!formDisabled">Add SubTask</button>
+            <button 
+              type="submit" 
+              class="btn btn-success" 
+              *ngIf="!formDisabled" 
+              [disabled]="taskForm.invalid"
+              [ngStyle]="{'margin-left': '10px'}"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
