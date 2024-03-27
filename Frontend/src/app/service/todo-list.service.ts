@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Task } from '../model/Task.model';
 import { Subject } from 'rxjs';
+import { TaskDTO } from '../model/TaskDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +34,12 @@ export class TodoListService {
   deleteTask(id: number) {
     this._tasks = this._tasks.filter(task => (task.id !== id || task.parentId !== id));
     this.tasksSubject.next([...this._tasks]);
+  }
+
+  public getTaskById(id: number): TaskDTO{
+    return {task: this._tasks[0], subTasks: [this._tasks[1], this._tasks[2]]};
+  }
+  public saveTask(task: TaskDTO){
+    
   }
 }
