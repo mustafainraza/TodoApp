@@ -5,7 +5,7 @@ import { EditTaskComponent } from './shared/edit-task/edit-task.component';
 
 const routes: Routes = [
   { path:'', component:HomeComponent },
-  { path:':id', component:EditTaskComponent },  
+  { path:':id', component:HomeComponent },  
   { path: '**', redirectTo:'', pathMatch:'full' }
 ];
 

@@ -3,28 +3,36 @@ import { Task } from '../../model/Task.model';
 import { TodoListService } from '../../service/todo-list.service'
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.css'],
-  imports: [CommonModule]
+  imports: [CommonModule,RouterModule]
 })
 export class TodoListComponent implements OnInit {
 
   tasks!: Task[];
   filteredTask:Task[]=[];  
+  routeId!:number;
+  nestedItem:boolean=false;
 
   private tasksSubscription!: Subscription;
 
-  constructor(private router:Router ,private toDoListService: TodoListService) { 
-    this.tasks = this.toDoListService.tasks;
-    this.filteredTask = [...this.tasks];
-  }
+  constructor(private router:Router ,private toDoListService: TodoListService, private activatedRoute:ActivatedRoute) {}
 
   ngOnInit() {        
+
+    this.routeId = this.activatedRoute.snapshot.params['id'];
+    if(!this.routeId) {
+      this.routeId = 0;
+    } else {
+      this.nestedItem = true;
+    }        
+    this.tasks = this.toDoListService.tasks.filter(task=>(task.parentId === +this.routeId));          
+    this.filteredTask = [...this.tasks];    
     this.tasksSubscription = this.toDoListService.tasksSubject.subscribe(tasks => {
       this.filteredTask = tasks;
     });            
@@ -33,10 +41,6 @@ export class TodoListComponent implements OnInit {
   deleteTask(id:number) {    
     this.toDoListService.deleteTask(id);
     this.tasks = [...this.filteredTask];    
-  }
-
-  editTask(id: number) {
-    this.router.navigate(['/', id]); 
   }
 
   searchquery(query:string) {
@@ -51,10 +55,10 @@ export class TodoListComponent implements OnInit {
     )}
 
     enter(id:number) {
-      alert(id);
+      this.router.navigate(['/',id]);
     }
 
-  ngOnDestroy() {
-    this.tasksSubscription.unsubscribe();
-  }
+    ngOnDestroy() {
+      this.tasksSubscription.unsubscribe();
+    }
 }
