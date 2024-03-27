@@ -8,7 +8,7 @@ const routes: Routes = [
   { path:'', component:HomeComponent },
   { path: 'edit', redirectTo: '', pathMatch: 'full'},
   { path:'edit/:id', component:EditTaskComponent, resolve: {task: TaskResolver} },
-  { path: ':id', component: EditTaskComponent, resolve: {task: TaskResolver}},
+  { path: ':id', component: HomeComponent},
   { path: 'create', component: EditTaskComponent },  
   { path: '**', redirectTo:'', pathMatch:'full' }
 ];

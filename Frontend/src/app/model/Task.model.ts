@@ -1,7 +1,5 @@
-
-
 export class Task {
-
+  
     private _id: number;
     private _title: string;
     private _description: string;
@@ -15,6 +13,7 @@ export class Task {
         this._parentId = parentId;
         this._id = id;
     }   
+  
     public get id(): number {
         return this._id;
     }
@@ -33,7 +32,6 @@ export class Task {
     public set description(value: string) {
         this._description = value;
     }
-    
     public get parentId(): number {
         return this._parentId;
     }
@@ -45,5 +43,5 @@ export class Task {
     }
     public set temp_tags(value: string[]) {
         this._temp_tags = value;
-    }
+    } 
 }
