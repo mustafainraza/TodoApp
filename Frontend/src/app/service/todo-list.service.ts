@@ -6,8 +6,8 @@ import { TaskDTO } from '../model/TaskDTO';
 @Injectable({
   providedIn: 'root'
 })
-export class TodoListService {
 
+export class TodoListService {
   constructor() { }
 
   private _tasks: Task[] = [

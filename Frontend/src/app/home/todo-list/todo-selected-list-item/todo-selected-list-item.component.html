@@ -3,10 +3,10 @@
   <div class="jumbotron">
     <h1 class="display-4"> {{ task?.title }}</h1>
     <p class="lead">{{ task?.description }}</p>
-    <hr class="my-4">    
-    <p> {{ task?.temp_tags }} </p>
+    <hr class="my-4">
+    <span class="tag">{{ task?.temp_tags }}</span>
     <p class="lead">
-      <a class="btn btn-success btn-md" role="button">Go Back</a>
+      <a class="btn btn-success btn-md" role="button" [routerLink]="['/']">Go Back</a>
     </p>
   </div>
 </div>
