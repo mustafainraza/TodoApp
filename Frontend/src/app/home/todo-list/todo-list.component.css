@@ -24,6 +24,7 @@ table, .searchbar {
 
 .icon {
   margin: 0.20rem;
+  z-index: -1;
 }
 
 .hover-effect {

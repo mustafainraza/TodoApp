@@ -7,7 +7,10 @@ import { UserComponent } from './user/user.component';
 const routes: Routes = [
   { path:'', component:HomeComponent },
   { path: 'user', component:UserComponent},
-  { path:':id', component:EditTaskComponent }, 
+  { path: 'edit', redirectTo: '', pathMatch: 'full'},
+  { path:'edit/:id', component:EditTaskComponent },
+  { path: ':id', component: HomeComponent},
+  { path: 'create', component: EditTaskComponent },  
   { path: '**', redirectTo:'', pathMatch:'full' }
 ];
 
