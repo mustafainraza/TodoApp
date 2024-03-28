@@ -31,6 +31,10 @@ export class TodoListService {
     this._tasks = value;
   }
 
+  public getSelectedById(id:number):Task {
+    return this._tasks[id-1];
+  }
+  
   deleteTask(id: number) {
     this._tasks = this._tasks.filter(task => (task.id !== id || task.parentId !== id));
     this.tasksSubject.next([...this._tasks]);

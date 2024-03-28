@@ -4,20 +4,21 @@ import { TodoListService } from '../../service/todo-list.service'
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { TodoSelectedListItemComponent } from './todo-selected-list-item/todo-selected-list-item.component';
 
 @Component({
   standalone: true,
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.css'],
-  imports: [CommonModule,RouterModule]
+  imports: [CommonModule,RouterModule,TodoSelectedListItemComponent]
 })
 export class TodoListComponent implements OnInit {
 
   tasks!: Task[];
   filteredTask:Task[]=[];  
   routeId!:number;
-  nestedItem:boolean=false;
+  selectedTask:boolean=false;
 
   private tasksSubscription!: Subscription;
 
@@ -26,10 +27,11 @@ export class TodoListComponent implements OnInit {
   ngOnInit() {        
 
     this.routeId = this.activatedRoute.snapshot.params['id'];
-    if(!this.routeId) {
+    if(!this.routeId) {      
       this.routeId = 0;
+      this.selectedTask = false;
     } else {
-      this.nestedItem = true;
+      this.selectedTask = true;
     }        
     this.tasks = this.toDoListService.tasks.filter(task=>(task.parentId === +this.routeId));          
     this.filteredTask = [...this.tasks];    
