@@ -22,7 +22,6 @@ export class TodoSelectedListItemComponent implements OnInit {
    }
 
   ngOnInit() {
-    console.log('hello');
     this.task = this.todoListService.getSelectedById(+this.taskId);
   }
 
