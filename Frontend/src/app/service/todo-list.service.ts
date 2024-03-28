@@ -31,12 +31,13 @@ export class TodoListService {
     this._tasks = value;
   }
 
-  public getSelectedById(id:number):Task {
-    return this._tasks[id-1];
+  public getSelectedById(id:number):Task | undefined {
+    return this._tasks.find(task => task.id === id);
   }
   
   deleteTask(id: number) {
-    this._tasks = this._tasks.filter(task => (task.id !== id || task.parentId !== id));
+    this._tasks = this._tasks.filter(task => (task.id !== id));
+    this._tasks = this._tasks.filter(task => (task.parentId !== id));
     this.tasksSubject.next([...this._tasks]);
   }
 

@@ -26,6 +26,8 @@ export class TodoListComponent implements OnInit {
 
   ngOnInit() {        
 
+    console.log('ngoninit');
+
     this.routeId = this.activatedRoute.snapshot.params['id'];
     if(!this.routeId) {      
       this.routeId = 0;
@@ -41,7 +43,8 @@ export class TodoListComponent implements OnInit {
   }
 
   deleteTask(id:number) {    
-    this.toDoListService.deleteTask(id);
+    this.toDoListService.deleteTask(+id);
+    this.filteredTask = this.toDoListService.tasks.filter(task=>(task.parentId === +this.routeId)); 
     this.tasks = [...this.filteredTask];    
   }
 
