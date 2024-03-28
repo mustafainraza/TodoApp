@@ -11,7 +11,7 @@ import { Task } from '../../../model/Task.model';
 export class TodoSelectedListItemComponent implements OnInit {
 
   @Input('task_id') taskId!:number;
-  task!:Task;
+  task!:Task | undefined;
   private todoListService:TodoListService
 
   constructor() {
@@ -19,7 +19,8 @@ export class TodoSelectedListItemComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.task = this.todoListService.getSelectedById(this.taskId);
+    console.log('hello');
+    this.task = this.todoListService.getSelectedById(+this.taskId);
   }
 
 }
