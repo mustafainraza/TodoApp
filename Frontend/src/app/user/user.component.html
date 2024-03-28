@@ -1,0 +1,21 @@
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 mx-auto">
+        <div class="card">
+          <div class="col-md-6 mx-auto">
+            <img [src]="user?.userImg" class="card-img-top" alt="User Image" [ngStyle]="{ 'max-width.px': 200, 'max-height.px': 200 }">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">User Profile</h5>
+            <ul class="list-group">
+              <li class="list-group-item"><strong>Name:</strong> {{ user?.userName }}</li>
+              <li class="list-group-item"><strong>Email:</strong> {{ user?.email }}</li>
+              <li class="list-group-item"><strong>Age:</strong> {{ user?.age }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
