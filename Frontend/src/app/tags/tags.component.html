@@ -1,0 +1,14 @@
+<div class="container">
+  <h2 class="text-center mb-4">TAGS</h2>
+  <ul class="list-group">
+    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let tag of tags">
+      <span style="background-color: black;" class="badge badge-primary badge-pill"> {{ tag.id }} </span>
+      <p> {{ tag.name }} </p>
+      <div>
+        <i class="fas fa-edit icon"></i>
+        <i class="fas fa-trash-alt icon" (click)="deleteTag(tag.id)"></i>
+      </div>
+    </li>
+  </ul>
+  <button type="button" class="btn btn-dark mt-4 w-100" >ADD</button>
+</div>

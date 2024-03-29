@@ -1,12 +1,15 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { TodoListService } from '../../../service/todo-list.service';
 import { Task } from '../../../model/Task.model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   standalone:true,
   selector: 'app-todo-selected-list-item',
   templateUrl: './todo-selected-list-item.component.html',
-  styleUrls: ['./todo-selected-list-item.component.css']
+  styleUrls: ['./todo-selected-list-item.component.css'],
+  imports: [ RouterModule]
+  
 })
 export class TodoSelectedListItemComponent implements OnInit {
 
@@ -19,7 +22,6 @@ export class TodoSelectedListItemComponent implements OnInit {
    }
 
   ngOnInit() {
-    console.log('hello');
     this.task = this.todoListService.getSelectedById(+this.taskId);
   }
 

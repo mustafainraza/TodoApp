@@ -27,8 +27,6 @@ export class TodoListComponent implements OnInit {
 
   ngOnInit() {        
 
-    console.log('ngoninit');
-
     this.routeId = this.activatedRoute.snapshot.params['id'];
     if(!this.routeId) {      
       this.routeId = 0;
@@ -60,11 +58,12 @@ export class TodoListComponent implements OnInit {
         task.description.toLowerCase().includes(query.toLowerCase()) ||
         task.temp_tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
     )}
-
-    enter(id:number) {
-      this.router.navigate(['/',id]);
+    viewTask(id: number){
+      this.router.navigate(["/" + id]);
     }
-
+    addNewTask(){
+      this.router.navigate(["/create"]);
+    }
     ngOnDestroy() {
       this.tasksSubscription.unsubscribe();
     }
