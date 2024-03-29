@@ -1,0 +1,9 @@
+.container {    
+    margin: 5rem auto;
+    width: 50%;    
+}
+
+.icon {
+    margin: 0.20rem;
+    z-index: -1;
+  }
