@@ -5,10 +5,12 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } fr
 import { Task } from '../../model/Task.model';
 import { CommonModule } from '@angular/common';
 import { TodoListService } from '../../service/todo-list.service';
-
+import { Tag } from '../../model/Tag';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 @Component({
   standalone: true,
-  imports:[CommonModule, ReactiveFormsModule],
+  imports:[CommonModule, ReactiveFormsModule, NgMultiSelectDropDownModule],
   selector: 'app-edit-task',
   templateUrl: './edit-task.component.html',
   styleUrls: ['./edit-task.component.css']
@@ -20,6 +22,9 @@ export class EditTaskComponent implements OnInit {
   submitButtonText: string = "";
   formDisabled: boolean = true;
   showSubTasks: string = "Hide";
+  selectedList: Tag[] = [];
+  dropDownList: Tag[] = [];
+  dropdownSettings: IDropdownSettings = {};
   constructor(
     private _route: ActivatedRoute, 
     private fb: FormBuilder, 
@@ -28,6 +33,7 @@ export class EditTaskComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.dropDownList = this.service.getAllAvailableTags();
     this._route.url.subscribe({
       next: (url: UrlSegment[])=>{
         const urlParts: string[] = url.map((segment: UrlSegment)=>segment.path);
@@ -37,23 +43,35 @@ export class EditTaskComponent implements OnInit {
           this._route.data.subscribe({
             next: ({task})=>{
               this.currTask = task;
+              this.selectedList = this.service.getAvailableTagsForTask(this.currTask.task.id);
             }
           });
         }
         else if(urlParts.includes('create')) {
           this.submitButtonText = "Create";
           this.formDisabled = false;
-          this.currTask = {task: new Task("", "", [], -1, -1), subTasks: []}
+          this.currTask = {task: new Task("", "", [], -1, -1), subTasks: []};
+          this.selectedList = [];
         } else {
           this.formDisabled = true;
           this._route.data.subscribe({
             next: ({task})=>{
               this.currTask = task;
+              this.selectedList = this.service.getAvailableTagsForTask(this.currTask.task.id);
             }
           });
         }
       }
-    })
+    });
+    this.dropdownSettings = {
+      idField: "id",
+      textField: "name",
+      singleSelection: false,
+      selectAllText: 'Select All Tags',
+      itemsShowLimit: 4,
+      allowSearchFilter: true
+    }
+    this.currTask.task.tags = this.selectedList;
     this.initForm();
   }
   onAddSubTask(){
@@ -72,6 +90,16 @@ export class EditTaskComponent implements OnInit {
   }
   goBack(){
     this._router.navigate(["/"]);
+  }
+  onDropDownItemSelect(item: any){
+    const incomingTag: Tag = {id: item.id, name: item.name};
+    const currTag: Tag[] = this.currTask.task.tags.filter((tag: Tag)=>tag.id = incomingTag.id);
+    if(currTag.length === 0) this.currTask.task.tags.push(incomingTag);
+    else currTag[0] = incomingTag;
+  }
+  onSelectAll(items: any){
+    const incomingList: Tag[] = items.map((item: any)=>({id: item.id, name: item.name}));
+    this.currTask.task.tags = incomingList;
   }
   onSubmit(){
     this.currTask.task.title = this.taskForm.get('title')?.value;

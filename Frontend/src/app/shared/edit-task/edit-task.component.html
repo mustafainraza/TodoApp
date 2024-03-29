@@ -37,6 +37,25 @@
         <button class="btn btn-primary" type="button" (click)="onChangeSubTaskVisibility()">{{showSubTasks}} Sub Tasks</button>
         <hr>
         <br>
+        <div class="row">
+          <h2>Tags</h2>
+          <div class="col-xs-12">
+            <div class="form-group">
+              <ng-multiselect-dropdown
+                placeholder="Add or Remove Tags"
+                [settings]="dropdownSettings"
+                [data]="dropDownList"
+                (onSelect)="onDropDownItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+                
+              >
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+          
+        </div>
+        <br>
+        <hr>
         <br>
         <div class="row" *ngIf="showSubTasks === 'Hide'">
           <h2>SubTasks</h2>

@@ -1,3 +1,5 @@
+import { Tag } from "./Tag";
+
 export class Task {
   
     private _id: number;
@@ -5,7 +7,8 @@ export class Task {
     private _description: string;
     private _parentId: number;
     private _temp_tags: string[] = [];
-
+    private _tags: Tag[] = [];
+    
     constructor(title: string, description: string, temp_tags:string[], parentId:number, id: number) {
         this._title = title;
         this._description = description;
@@ -13,7 +16,12 @@ export class Task {
         this._parentId = parentId;
         this._id = id;
     }   
-  
+    public get tags(): Tag[] {
+        return this._tags;
+    }
+    public set tags(value: Tag[]) {
+        this._tags = value;
+    }
     public get id(): number {
         return this._id;
     }
