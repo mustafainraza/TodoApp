@@ -6,8 +6,8 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class TagService {
-
-  constructor() { }
+ 
+   constructor() { }
 
   private _tags: Tag[] = [
     { id: 1, name: 'active' },
@@ -28,5 +28,14 @@ export class TagService {
      this._tags = this._tags.filter(tag => tag.id !== id)
      this.tagSubject.next(this._tags);
   }
+
+  getTagById(id: number): Tag {
+    console.log(id);
+   return this._tags.filter(tag => tag.id === id)[0];    
+ }
+
+ saveTask(tag: Tag) {
+    
+ }
 
 }
