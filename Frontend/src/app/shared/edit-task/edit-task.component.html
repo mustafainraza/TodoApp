@@ -47,7 +47,7 @@
                 [data]="dropDownList"
                 (onSelect)="onDropDownItemSelect($event)"
                 (onSelectAll)="onSelectAll($event)"
-                
+                [disabled]="formDisabled"
               >
               </ng-multiselect-dropdown>
             </div>
