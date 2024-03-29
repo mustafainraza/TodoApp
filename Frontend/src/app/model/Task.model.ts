@@ -1,3 +1,5 @@
+import { Tag } from "./Tag";
+
 export class Task {
   
     private _id: number;
@@ -5,15 +7,22 @@ export class Task {
     private _description: string;
     private _parentId: number;
     private _temp_tags: string[] = [];
-
-    constructor(title: string, description: string, temp_tags:string[], parentId:number, id: number) {
+    private _user_id: number;
+    private _tags: Tag[] = [];
+    constructor(title: string, description: string, temp_tags:string[], parentId:number, id: number,_user_id:number) {
         this._title = title;
         this._description = description;
         this.temp_tags = temp_tags;
         this._parentId = parentId;
         this._id = id;
+        this._user_id=_user_id;
     }   
-  
+    public get tags(): Tag[] {
+        return this._tags;
+    }
+    public set tags(value: Tag[]) {
+        this._tags = value;
+    }
     public get id(): number {
         return this._id;
     }
@@ -44,4 +53,12 @@ export class Task {
     public set temp_tags(value: string[]) {
         this._temp_tags = value;
     } 
+
+    public get user_id(): number {
+        return this._user_id;
+    }
+    
+    public set user_id(value: number) {
+        this._user_id = value;
+    }
 }

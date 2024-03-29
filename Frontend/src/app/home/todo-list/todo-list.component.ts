@@ -19,6 +19,7 @@ export class TodoListComponent implements OnInit {
   filteredTask:Task[]=[];  
   routeId!:number;
   selectedTask:boolean=false;
+  userId:number=1;
 
   private tasksSubscription!: Subscription;
 
@@ -33,7 +34,8 @@ export class TodoListComponent implements OnInit {
     } else {
       this.selectedTask = true;
     }        
-    this.tasks = this.toDoListService.tasks.filter(task=>(task.parentId === +this.routeId));          
+    this.tasks = this.toDoListService.tasks.filter(task=>(task.parentId === +this.routeId));  
+    this.tasks = this.tasks.filter(task => task.user_id === this.userId);    
     this.filteredTask = [...this.tasks];    
     this.tasksSubscription = this.toDoListService.tasksSubject.subscribe(tasks => {
       this.filteredTask = tasks;
@@ -56,7 +58,12 @@ export class TodoListComponent implements OnInit {
         task.description.toLowerCase().includes(query.toLowerCase()) ||
         task.temp_tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
     )}
-
+    viewTask(id: number){
+      this.router.navigate(["/" + id]);
+    }
+    addNewTask(){
+      this.router.navigate(["/create"]);
+    }
     ngOnDestroy() {
       this.tasksSubscription.unsubscribe();
     }
