@@ -5,13 +5,15 @@ export class Task {
     private _description: string;
     private _parentId: number;
     private _temp_tags: string[] = [];
+    private _user_id: number;
 
-    constructor(title: string, description: string, temp_tags:string[], parentId:number, id: number) {
+    constructor(title: string, description: string, temp_tags:string[], parentId:number, id: number,_user_id:number) {
         this._title = title;
         this._description = description;
         this.temp_tags = temp_tags;
         this._parentId = parentId;
         this._id = id;
+        this._user_id=_user_id;
     }   
   
     public get id(): number {
@@ -44,4 +46,12 @@ export class Task {
     public set temp_tags(value: string[]) {
         this._temp_tags = value;
     } 
+
+    public get user_id(): number {
+        return this._user_id;
+    }
+    
+    public set user_id(value: number) {
+        this._user_id = value;
+    }
 }

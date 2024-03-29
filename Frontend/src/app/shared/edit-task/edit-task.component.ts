@@ -43,7 +43,7 @@ export class EditTaskComponent implements OnInit {
         else if(urlParts.includes('create')) {
           this.submitButtonText = "Create";
           this.formDisabled = false;
-          this.currTask = {task: new Task("", "", [], -1, -1), subTasks: []}
+          this.currTask = {task: new Task("", "", [], -1, -1,1), subTasks: []}
         } else {
           this.formDisabled = true;
           this._route.data.subscribe({
