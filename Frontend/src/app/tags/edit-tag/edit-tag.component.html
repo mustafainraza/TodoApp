@@ -1,0 +1,11 @@
+<div class="container">
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="exampleInputTag" class="mb-2"> TAG</label>
+            <input type="text" class="form-control" id="exampleInputTag" formControlName="name">
+            <div *ngIf="taskForm.get('name')?.invalid && taskForm.get('name')?.touched" [ngStyle]="{'color': 'red'}">
+                Required</div>
+            <button type="submit" class="btn btn-dark w-100 mt-4" [disabled]="taskForm.invalid">Submit</button>
+        </div>
+    </form>
+</div>
