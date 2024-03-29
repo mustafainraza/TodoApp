@@ -56,7 +56,12 @@ export class TodoListComponent implements OnInit {
         task.description.toLowerCase().includes(query.toLowerCase()) ||
         task.temp_tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
     )}
-
+    viewTask(id: number){
+      this.router.navigate(["/" + id]);
+    }
+    addNewTask(){
+      this.router.navigate(["/create"]);
+    }
     ngOnDestroy() {
       this.tasksSubscription.unsubscribe();
     }
