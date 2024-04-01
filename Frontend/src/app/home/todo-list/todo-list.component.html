@@ -1,4 +1,9 @@
-<div class="container">
+<div class="container" *ngIf="isError">
+  <div class="col-xs-12">
+    {{ error.message }}
+  </div>
+</div>
+<div class="container" *ngIf="!isError">
   <app-todo-selected-list-item *ngIf="routeId && selectedTask" [task_id]="routeId"></app-todo-selected-list-item>
   <br><br>  
   <div class="row searchbar">
@@ -24,13 +29,13 @@
       </tr>
     </thead>
     <tbody>      
-        <tr *ngFor="let task of filteredTask; let i = index"  (click)="viewTask(i+1)">
-          <th scope="row"> {{ task.id }} </th>
-          <td> {{ task.title }}</td>
-          <td> {{ task.description }}</td>
-          <td>
+        <tr *ngFor="let task of tasks; let i = index">
+          <th scope="row" (click)="viewTask(task.id)"> {{ task.id }} </th>
+          <td (click)="viewTask(task.id)"> {{ task.title }}</td>
+          <td (click)="viewTask(task.id)"> {{ task.description }}</td>
+          <td (click)="viewTask(task.id)">
             <div class="tag-list">
-              <span class="tag">{{ task.temp_tags[0] }}</span>
+              <span class="tag">{{ task.tags[0].name }}</span>
             </div>
           </td>
           <td>

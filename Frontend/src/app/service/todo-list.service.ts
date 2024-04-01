@@ -35,17 +35,14 @@ export class TodoListService {
     this.tasksSubject.next([...this._tasks]);
   }
 
-  public getTaskById(id: number): TaskDTO{
-    return {task: this._tasks[0], subTasks: [this._tasks[1], this._tasks[2]]};
+  getTaskById(id: number): Observable<ApiResponse>{
+    return this.http.get<ApiResponse>(this.serviceUrl+id);
   }
-  public saveTask(task: TaskDTO): Observable<ApiResponse>{
+  saveTask(task: TaskDTO): Observable<ApiResponse>{
     return this.http.post<ApiResponse>(this.serviceUrl, task);
   }
-  public getAllAvailableTags(){
-    return [{id: 1, name: "tag1"}, {id: 2, name: "tag2"}, {id: 3, name: "tag3"}, {id: 4, name: "tag4"}];
-  }
-  public getAvailableTagsForTask(id: number){
-    return [{id: 1, name: "tag1"}, {id: 2, name: "tag2"}, {id: 4, name: "tag4"}];
+  getAllTasks(): Observable<ApiResponse>{
+    return this.http.get<ApiResponse>(this.serviceUrl);
   }
 }
 

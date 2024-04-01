@@ -5,7 +5,6 @@ import { ActivatedRoute, Route, Router, UrlSegment } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TagService } from '../../service/tag.service';
 import { ApiResponse } from '../../model/ApiResponse.model';
-import { map } from 'rxjs';
 
 @Component({
   standalone: true,
