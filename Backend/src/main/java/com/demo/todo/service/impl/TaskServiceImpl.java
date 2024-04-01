@@ -92,7 +92,7 @@ public class TaskServiceImpl implements TaskService {
         dto.getSubTasks()
                 .forEach(subTask->{
                     Task newSubTask;
-                    if(subTask.getId()==null){
+                    if(subTask.getId()==null || subTask.getId()<0L){
                         newSubTask = new Task();
                     } else {
                         newSubTask = taskRepository.findById(subTask.getId()).get();

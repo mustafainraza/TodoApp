@@ -1,26 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Task } from '../model/Task.model';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { TaskDTO } from '../model/TaskDTO';
+import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { ApiResponse } from '../model/ApiResponse.model';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class TodoListService {
-  constructor() { }
 
-  private _tasks: Task[] = [
-    new Task('Complete Angular project', 'Finish the Angular project with all required features', ['tag1', 'tag2'], 0, 1,1),
-    new Task('Prepare presentation slides', 'Create slides for the upcoming presentation', ['tag2', 'tag2'], 0, 2,2),
-    new Task('Call mom', 'Call mom to check in and chat for a while', ['tag3', 'tag2'], 9, 3,1),
-    new Task('Buy groceries', 'Go to the supermarket and buy essential groceries', ['tag4', 'tag2'], 8, 4,1),
-    new Task('Buy groceries', 'Go to the supermarket and buy essential groceries', ['tag4', 'tag2'], 6, 5,1),
-    new Task('Buy groceries', 'Go to the supermarket and buy essential groceries', ['tag4', 'tag2'], 0, 6,1),
-    new Task('Buy groceries', 'Go to the supermarket and buy essential groceries', ['tag4', 'tag2'], 0, 7,2),
-    new Task('Buy groceries', 'Go to the supermarket and buy essential groceries', ['tag4', 'tag2'], 0, 8,2),
-    new Task('Buy groceries', 'Go to the supermarket and buy essential groceries', ['tag4', 'tag2'], 0, 9,3)
-  ];
+  serviceUrl: string = environment.BACKEND_URL + "task/";
+  constructor(private http: HttpClient) { }
+
+  private _tasks: Task[] = [];
 
   tasksSubject = new Subject<Task[]>();
 
@@ -43,8 +38,8 @@ export class TodoListService {
   public getTaskById(id: number): TaskDTO{
     return {task: this._tasks[0], subTasks: [this._tasks[1], this._tasks[2]]};
   }
-  public saveTask(task: TaskDTO){
-    
+  public saveTask(task: TaskDTO): Observable<ApiResponse>{
+    return this.http.post<ApiResponse>(this.serviceUrl, task);
   }
   public getAllAvailableTags(){
     return [{id: 1, name: "tag1"}, {id: 2, name: "tag2"}, {id: 3, name: "tag3"}, {id: 4, name: "tag4"}];
