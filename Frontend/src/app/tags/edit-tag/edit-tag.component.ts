@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Tag } from '../../model/Tag';
+import { Tag } from '../../model/Tag.model';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router, UrlSegment } from '@angular/router';
 import { CommonModule } from '@angular/common';

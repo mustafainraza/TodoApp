@@ -1,4 +1,9 @@
-<div class="container" [ngStyle]="{'margin-top': '40px'}">
+<div class="container" * ngIf="isError">
+  <div class="col-xs-12">
+    {{error.message}}
+  </div>
+</div>
+<div class="container" [ngStyle]="{'margin-top': '40px'}" *ngIf="!isError">
   <div class="row">
     <div class="col-xs-12">
       <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">

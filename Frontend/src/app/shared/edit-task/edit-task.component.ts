@@ -1,13 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { TaskDTO } from '../../model/TaskDTO';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Task } from '../../model/Task.model';
 import { CommonModule } from '@angular/common';
 import { TodoListService } from '../../service/todo-list.service';
-import { Tag } from '../../model/Tag';
+import { Tag } from '../../model/Tag.model';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { ElementaryTaskDTO } from '../../model/ElementaryTaskDTO.model';
+import { ElementarySubTaskDTO } from '../../model/ElementarySubTaskDTO.model';
+import { TagService } from '../../service/tag.service';
+import { ApiResponse } from '../../model/ApiResponse.model';
+import { map, Subscription } from 'rxjs';
 @Component({
   standalone: true,
   imports:[CommonModule, ReactiveFormsModule, NgMultiSelectDropDownModule],
@@ -15,7 +20,7 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
   templateUrl: './edit-task.component.html',
   styleUrls: ['./edit-task.component.css']
 })
-export class EditTaskComponent implements OnInit {
+export class EditTaskComponent implements OnInit, OnDestroy {
   currTask!: TaskDTO;
   taskForm!: FormGroup;
   subTasksForm!: FormArray;
@@ -25,15 +30,33 @@ export class EditTaskComponent implements OnInit {
   selectedList: Tag[] = [];
   dropDownList: Tag[] = [];
   dropdownSettings: IDropdownSettings = {};
+  isError: boolean = false;
+  error: ApiResponse = {code: 0, message: "", response: null};
+  subscriptions: Subscription[] = [];
+  newSubTaskIds: number = -1;
   constructor(
     private _route: ActivatedRoute, 
     private fb: FormBuilder, 
     private service: TodoListService,
-    private _router: Router
+    private _router: Router,
+    private tagService: TagService
   ) { }
+  
 
   ngOnInit() {
-    this.dropDownList = this.service.getAllAvailableTags();
+    this.subscriptions.push(this.tagService.sendGetAllTagsRequest()
+      .pipe(map((apiResponse: ApiResponse)=>apiResponse.response))
+      .subscribe({
+        next: (tags: Tag[])=>{
+          this.dropDownList = tags;
+          this.isError = false;
+        },
+        error: (errorApiResponse)=>{
+          this.isError = true;
+          this.error = errorApiResponse;
+        }
+      })
+    );
     this._route.url.subscribe({
       next: (url: UrlSegment[])=>{
         const urlParts: string[] = url.map((segment: UrlSegment)=>segment.path);
@@ -50,7 +73,7 @@ export class EditTaskComponent implements OnInit {
         else if(urlParts.includes('create')) {
           this.submitButtonText = "Create";
           this.formDisabled = false;
-          this.currTask = {task: new Task("", "", [], -1, -1,1), subTasks: []}
+          this.currTask = {task: {id: -1, title: "", description: "", tags: []}, subTasks: []};
         } else {
           this.formDisabled = true;
           this._route.data.subscribe({
@@ -75,11 +98,12 @@ export class EditTaskComponent implements OnInit {
   }
   onAddSubTask(){
     this.subTasksForm.push(this.fb.group({
-      id: [78],
+      id: [this.newSubTaskIds],
       title: ["", Validators.required],
       description: ["", Validators.required]
     }));
     this.showSubTasks = "Hide";
+    this.newSubTaskIds--;
   }
   onRemoveSubTask(index: number){
     this.subTasksForm.removeAt(index)
@@ -104,18 +128,26 @@ export class EditTaskComponent implements OnInit {
     this.currTask.task.title = this.taskForm.get('title')?.value;
     this.currTask.task.description = this.taskForm.get('description')?.value;
     this.subTasksForm.controls.forEach((subTaskControl)=>{
-      const subTaskControlEntryId: number = +subTaskControl.get("id")?.value
-      const currSubTask: Task = this.currTask.subTasks.filter(subTask=>subTask.id===subTaskControlEntryId)[0];
-      currSubTask.title = subTaskControl.get('title')?.value;
-      currSubTask.description = subTaskControl.get('description')?.value
+      this.currTask.subTasks.push({
+        id: subTaskControl.get("id")?.value,
+        title: subTaskControl.get("title")?.value,
+        description: subTaskControl.get("description")?.value
+      })
     })
-    this.service.saveTask(this.currTask);
-    console.log(this.currTask);
-    this.goBack()
+    this.service.saveTask(this.currTask).subscribe({
+      next: (taskApiResponse: ApiResponse)=>{
+        this.isError = false;
+        this.goBack();
+      },
+      error: (errorApiResponse)=>{
+        this.isError = true;
+        this.error = errorApiResponse;
+      }
+    })
   }
 
   private initForm(){
-    this.subTasksForm = this.fb.array(this.currTask.subTasks.map((task: Task)=> this.createTaskFormGroup(task)));
+    this.subTasksForm = this.fb.array(this.currTask.subTasks.map((task: ElementarySubTaskDTO)=> this.createTaskFormGroup(task)));
     this.taskForm = this.fb.group({
       id:[this.currTask.task.id],
       title: [this.currTask.task.title, Validators.required],
@@ -123,12 +155,14 @@ export class EditTaskComponent implements OnInit {
       subTasks: this.subTasksForm
     });
   }
-  private createTaskFormGroup(task: Task){
+  private createTaskFormGroup(task: ElementarySubTaskDTO){
     return this.fb.group({
       id: [task.id],
       title: [task.title, Validators.required],
       description: [task.description, Validators.required]
     });
   }
-
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub=>sub.unsubscribe());
+  }
 }
