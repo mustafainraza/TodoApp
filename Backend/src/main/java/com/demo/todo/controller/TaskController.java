@@ -30,13 +30,8 @@ public class TaskController {
         ApiResponse apiResponse = service.search(query);
         return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);
     }
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<ApiResponse> createTask(@RequestBody TaskDto taskDto){
-        ApiResponse apiResponse =  service.save(taskDto);
-        return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);
-    }
-    @PostMapping("/edit")
-    public ResponseEntity<ApiResponse> editTask(@RequestBody TaskDto taskDto){
         ApiResponse apiResponse =  service.save(taskDto);
         return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);
     }
