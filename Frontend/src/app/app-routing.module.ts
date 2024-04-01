@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'user', component:UserComponent },  
   { path: 'tags', component:TagsComponent }, 
   { path: 'tags/create', component:EditTagComponent},
-  { path: 'tags/edit/:id', component:EditTagComponent, resolve:{tag: TagResolver}},
+  { path: 'tags/edit/:id', component:EditTagComponent, resolve: { tagApiResponse: TagResolver}},
   { path: 'create', component: EditTaskComponent },  
   { path: 'edit', redirectTo: '', pathMatch: 'full'},
   { path:'edit/:id', component:EditTaskComponent, resolve: {task: TaskResolver} },

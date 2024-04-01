@@ -7,6 +7,7 @@ import com.demo.todo.repository.TagRepository;
 import com.demo.todo.repository.TaskRepository;
 import com.demo.todo.service.interfaces.TaskService;
 import com.demo.todo.util.ApiResponse;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,28 +33,29 @@ public class TaskServiceImpl implements TaskService {
     public ApiResponse getTask(Long id) {
         Optional<Task> taskOptional = taskRepository.findById(id);
         return taskOptional.map(task->{
-                if(task.getParent()==null){
-                    List<Task> tasks = taskRepository.findSubTasks(id);
-                    tasks.add(task);
-                    return new ApiResponse(HttpStatus.OK.value(), SUCCESS_MESSAGE, tasks);
-                } else {
-                    return new ApiResponse(HttpStatus.OK.value(), SUCCESS_MESSAGE, task);
+                    if(task.getParent()==null){
+                        List<Task> tasks = taskRepository.findSubTasks(id);
+                        tasks.add(task);
+                        return new ApiResponse(HttpStatus.OK.value(), SUCCESS_MESSAGE, tasks);
+                    } else {
+                        return new ApiResponse(HttpStatus.OK.value(), SUCCESS_MESSAGE, task);
+                    }
                 }
-            }
         ).orElseGet(()->new ApiResponse(HttpStatus.NOT_FOUND.value(), "Task Not Found", null));
     }
 
     @Override
+    @Transactional
     public ApiResponse deleteTask(Long id) {
         Optional<Task> taskOptional = taskRepository.findById(id);
         return taskOptional.map(task->{
-            if(task.getParent()==null){
-                List<Task> tasks = taskRepository.findSubTasks(id);
-                tasks.forEach(subTask->taskRepository.delete(subTask));
-            }
-            taskRepository.delete(task);
-            return new ApiResponse(HttpStatus.OK.value(), SUCCESS_MESSAGE, true);
-        }
+                    if(task.getParent()==null){
+                        List<Task> tasks = taskRepository.findSubTasks(id);
+                        tasks.forEach(subTask->taskRepository.delete(subTask));
+                    }
+                    taskRepository.delete(task);
+                    return new ApiResponse(HttpStatus.OK.value(), SUCCESS_MESSAGE, true);
+                }
         ).orElseGet(()->new ApiResponse(HttpStatus.NOT_FOUND.value(), "Task Not Found", false));
     }
 
@@ -65,6 +67,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public ApiResponse save(TaskDto taskDto) {
         final Long taskId = taskDto.getTask().getId();
         if(taskId != null && taskId>0L){

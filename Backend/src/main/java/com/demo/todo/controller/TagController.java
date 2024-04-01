@@ -26,13 +26,8 @@ public class TagController {
         return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<ApiResponse> createTask(@RequestBody TagDto tagDto){
-        ApiResponse apiResponse =  service.save(tagDto);
-        return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);
-    }
-    @PostMapping("/edit")
-    public ResponseEntity<ApiResponse> editTask(@RequestBody TagDto tagDto){
+    @PostMapping("/save")
+    public ResponseEntity<ApiResponse> saveTask(@RequestBody TagDto tagDto){
         ApiResponse apiResponse =  service.save(tagDto);
         return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);
     }

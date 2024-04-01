@@ -4,7 +4,6 @@ import com.demo.todo.dto.TaskDto;
 import com.demo.todo.service.interfaces.TaskService;
 import com.demo.todo.util.ApiResponse;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +43,7 @@ public class TaskController {
 
 
     @DeleteMapping("/{id}")
+
     public ResponseEntity<ApiResponse> deleteTag(@PathVariable Long id){
         ApiResponse apiResponse = service.deleteTask(id);
         return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);
