@@ -64,6 +64,7 @@ export class EditTagComponent implements OnInit {
 
   onSubmit() {
     this.currTag.name = this.taskForm.get('name')?.value;
+<<<<<<< HEAD
     this.tagService.sendSaveTagRequest(this.currTag).subscribe({
       next: (tag: ApiResponse)=> {
         this.isShowError = false;
@@ -76,5 +77,10 @@ export class EditTagComponent implements OnInit {
         this.goBack();
       }
     })
+=======
+    this.tagService.saveTask(this.currTag);
+    console.log(this.currTag);
+    this.goBack()
+>>>>>>> 7c107a07b6c931c26af1a9d995c0e9ef90e15243
   }
 }

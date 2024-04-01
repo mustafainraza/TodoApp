@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class TagService {
- 
+
    constructor(private httpClient: HttpClient) { }
 
   private _tags: Tag[] = [ ];
@@ -30,7 +30,7 @@ export class TagService {
 
   getTagById(id: number): Tag {
     console.log(id);
-   return this._tags.filter(tag => tag.id === id)[0];    
+   return this._tags.filter(tag => tag.id === id)[0];
  }
 
   sendGetTagByIdRequest(id: number){

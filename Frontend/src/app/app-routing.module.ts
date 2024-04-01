@@ -10,14 +10,14 @@ import { TaskResolver } from './resolvers/task-resolver.service';
 
 const routes: Routes = [
   { path:'', component:HomeComponent },
-  { path: 'user', component:UserComponent },  
-  { path: 'tags', component:TagsComponent }, 
+  { path: 'user', component:UserComponent },
+  { path: 'tags', component:TagsComponent },
   { path: 'tags/create', component:EditTagComponent},
   { path: 'tags/edit/:id', component:EditTagComponent, resolve: { tagApiResponse: TagResolver}},
-  { path: 'create', component: EditTaskComponent },  
+  { path: 'create', component: EditTaskComponent },
   { path: 'edit', redirectTo: '', pathMatch: 'full'},
   { path:'edit/:id', component:EditTaskComponent, resolve: {task: TaskResolver} },
-  { path: ':id', component: EditTaskComponent, resolve: {task: TaskResolver}},  
+  { path: ':id', component: EditTaskComponent, resolve: {task: TaskResolver}},
   { path: '**', redirectTo:'', pathMatch:'full' }
 ];
 

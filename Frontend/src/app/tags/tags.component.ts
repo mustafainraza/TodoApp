@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Tag } from '../model/Tag';
 import { TagService } from '../service/tag.service';
 import { map, Subscription } from 'rxjs';
@@ -46,7 +46,7 @@ export class TagsComponent implements OnInit, OnDestroy {
           if(!status.response){
             this.isError = true;
             this.error = status;
-          } else { 
+          } else {
             this.isError = false;
             this.getAllTags();
           }
@@ -59,13 +59,13 @@ export class TagsComponent implements OnInit, OnDestroy {
       })
     );
   }
-  
-  EditTag(id: number) {    
+
+  EditTag(id: number) {
     this.router.navigate(['/tags/edit', id], { relativeTo: this.route });
-  }    
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub=>sub.unsubscribe());
-  } 
+  }
 
 }
