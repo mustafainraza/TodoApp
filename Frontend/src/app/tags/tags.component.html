@@ -5,10 +5,10 @@
       <span style="background-color: black;" class="badge badge-primary badge-pill"> {{ tag.id }} </span>
       <p> {{ tag.name }} </p>
       <div>
-        <i class="fas fa-edit icon"></i>
+        <i class="fas fa-edit icon"  (click)="EditTag(tag.id)"></i>
         <i class="fas fa-trash-alt icon" (click)="deleteTag(tag.id)"></i>
       </div>
     </li>
   </ul>
-  <button type="button" class="btn btn-dark mt-4 w-100" >ADD</button>
+  <button type="button" class="btn btn-dark mt-4 w-100" [routerLink]="['create']">CREATE</button>
 </div>
