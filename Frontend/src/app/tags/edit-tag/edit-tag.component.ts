@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Route, Router, UrlSegment } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TagService } from '../../service/tag.service';
+import { ApiResponse } from '../../model/ApiResponse.model';
+import { map } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -16,7 +18,8 @@ export class EditTagComponent implements OnInit {
 
   currTag: Tag = { id: -1, name: '' };
   taskForm!: FormGroup;
-
+  isShowError: boolean = false;
+  error: any;
 
   constructor(
     private _router: Router,
@@ -32,8 +35,14 @@ export class EditTagComponent implements OnInit {
         const urlParts: string[] = url.map((segment: UrlSegment) => segment.path);
         if (urlParts.includes('edit')) {
           this._route.data.subscribe({
-            next: ({ tag }) => {
-              this.currTag = tag;
+            next: ({tagApiResponse})=>{
+              if(tagApiResponse.error){
+                this.isShowError = true;
+                this.error = tagApiResponse.error;
+              } else{
+                this.isShowError = false;
+                this.currTag = tagApiResponse.response;
+              }
             }
           });
         }
@@ -55,8 +64,23 @@ export class EditTagComponent implements OnInit {
 
   onSubmit() {
     this.currTag.name = this.taskForm.get('name')?.value;
+<<<<<<< HEAD
+    this.tagService.sendSaveTagRequest(this.currTag).subscribe({
+      next: (tag: ApiResponse)=> {
+        this.isShowError = false;
+        console.log(tag);
+        this.goBack();
+      },
+      error: error=>{
+        this.isShowError = true;
+        this.error = error;
+        this.goBack();
+      }
+    })
+=======
     this.tagService.saveTask(this.currTag);
     console.log(this.currTag);
     this.goBack()
+>>>>>>> 7c107a07b6c931c26af1a9d995c0e9ef90e15243
   }
 }

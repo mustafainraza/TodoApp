@@ -1,4 +1,7 @@
 <div class="container">
+    <div class="col-xs-12" *ngIf="isShowError">{{ error.message }}</div>
+</div>
+<div class="container" *ngIf="!isShowError">
     <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
             <label for="exampleInputTag" class="mb-2"> TAG</label>

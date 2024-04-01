@@ -1,36 +1,71 @@
 import { Component, OnInit } from '@angular/core';
 import { Tag } from '../model/Tag';
 import { TagService } from '../service/tag.service';
-import { Subscription } from 'rxjs';
+import { map, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ApiResponse } from '../model/ApiResponse.model';
 
 @Component({
   selector: 'app-tags',
   templateUrl: './tags.component.html',
   styleUrls: ['./tags.component.css']
 })
-export class TagsComponent implements OnInit {
+export class TagsComponent implements OnInit, OnDestroy {
 
   tags: Tag[] = [];
-  private tasksSubscription!: Subscription;
+  isError: boolean = false;
+  error: any;
+  private subscriptions: Subscription[] = [];
 
-  constructor(private tagService: TagService, private router:Router, private route: ActivatedRoute) { }
+  constructor(private tagService: TagService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.tags = this.tagService.tags;
-    this.tasksSubscription = this.tagService.tagSubject.subscribe(tags => this.tags = tags);
+    this.getAllTags();
+  }
+
+  getAllTags(){
+    this.subscriptions.push(
+      this.tagService.sendGetAllTagsRequest().pipe(map((tags: ApiResponse)=>tags.response)).subscribe({
+        next: (tags: Tag[])=>{
+          this.isError = false;
+          this.tags=tags;
+        },
+        error: error=>{
+          this.isError = true;
+          this.error = error;
+        }
+      })
+    );
   }
 
   deleteTag(id: number) {
-    this.tagService.deleteTag(+id);
+    this.subscriptions.push(
+      this.tagService.sendDeleteTagRequest(id).subscribe({
+        next: (status: ApiResponse)=>{
+          console.log(status)
+          if(!status.response){
+            this.isError = true;
+            this.error = status;
+          } else {
+            this.isError = false;
+            this.getAllTags();
+          }
+        },
+        error: error=>{
+          console.log(error);
+          this.isError = true;
+          this.error = error;
+        }
+      })
+    );
   }
 
-  EditTag(id: number) {    
+  EditTag(id: number) {
     this.router.navigate(['/tags/edit', id], { relativeTo: this.route });
-  }    
+  }
 
-  ngDestroy() {
-    this.tasksSubscription.unsubscribe();
-  } 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub=>sub.unsubscribe());
+  }
 
 }
