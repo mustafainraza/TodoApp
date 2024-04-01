@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Tag } from '../model/Tag';
 import { TagService } from '../service/tag.service';
 import { map, Subscription } from 'rxjs';
