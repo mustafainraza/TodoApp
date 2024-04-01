@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class TagController {
     private TagService service;
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<ApiResponse> getAllTags(){
         ApiResponse apiResponse = service.getAllTags();
         return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);
@@ -26,7 +26,7 @@ public class TagController {
         return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);
     }
 
-    @PostMapping("/save")
+    @PostMapping("/")
     public ResponseEntity<ApiResponse> saveTask(@RequestBody TagDto tagDto){
         ApiResponse apiResponse =  service.save(tagDto);
         return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);

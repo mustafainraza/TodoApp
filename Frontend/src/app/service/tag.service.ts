@@ -10,41 +10,23 @@ import { environment } from '../../environments/environment';
 })
 export class TagService {
 
-   constructor(private httpClient: HttpClient) { }
+  serviceUrl: string = "tag/";
 
-  private _tags: Tag[] = [ ];
+  constructor(private httpClient: HttpClient) { }
 
   tagSubject = new Subject<Tag[]>();
 
-  public get tags(): Tag[] {
-    return this._tags;
-  }
-  public set tags(value: Tag[]) {
-    this._tags = value;
-  }
-
-  deleteTag(id: number) {
-     this._tags = this._tags.filter(tag => tag.id !== id)
-     this.tagSubject.next(this._tags);
-  }
-
-  getTagById(id: number): Tag {
-    console.log(id);
-   return this._tags.filter(tag => tag.id === id)[0];
- }
-
   sendGetTagByIdRequest(id: number){
-    return this.httpClient.get<ApiResponse>(environment.BACKEND_URL+"tag/"+id)
+    return this.httpClient.get<ApiResponse>(environment.BACKEND_URL+this.serviceUrl+id)
   }
   sendSaveTagRequest(tag: Tag){
-    return this.httpClient.post<ApiResponse>(environment.BACKEND_URL+"tag/save", tag)
+    return this.httpClient.post<ApiResponse>(environment.BACKEND_URL+this.serviceUrl, tag)
   }
   sendGetAllTagsRequest(){
-    return this.httpClient.get<ApiResponse>(environment.BACKEND_URL+"tag/all")
-
+    return this.httpClient.get<ApiResponse>(environment.BACKEND_URL+this.serviceUrl)
   }
   sendDeleteTagRequest(id: number){
-    return this.httpClient.delete<ApiResponse>(environment.BACKEND_URL+"tag/"+id)
+    return this.httpClient.delete<ApiResponse>(environment.BACKEND_URL+this.serviceUrl+id)
   }
 
 }
