@@ -16,8 +16,8 @@ const routes: Routes = [
   { path: 'tags/edit/:id', component:EditTagComponent, resolve: { tagApiResponse: TagResolver}},
   { path: 'create', component: EditTaskComponent },
   { path: 'edit', redirectTo: '', pathMatch: 'full' }, 
-  { path: 'edit/:id', component:EditTaskComponent, resolve: { task: TaskResolver } },
-  { path: ':id', component: EditTaskComponent, resolve: { task: TaskResolver }},
+  { path: 'edit/:id', component:EditTaskComponent, resolve: { taskApiResponse: TaskResolver } },
+  { path: ':id', component: EditTaskComponent, resolve: { taskApiResponse: TaskResolver }},
   { path: '**', redirectTo:'', pathMatch: 'full' }
 ];
 

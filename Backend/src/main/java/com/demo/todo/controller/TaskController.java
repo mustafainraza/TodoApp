@@ -22,7 +22,7 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getTask(@PathVariable Long id){
-        ApiResponse apiResponse =  service.getTask(id);
+         ApiResponse apiResponse =  service.getTask(id);
         return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);
     }
     @GetMapping("/search")

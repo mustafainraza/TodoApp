@@ -1,14 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { TaskDTO } from '../../model/TaskDTO';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Task } from '../../model/Task.model';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TodoListService } from '../../service/todo-list.service';
 import { Tag } from '../../model/Tag.model';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { ElementaryTaskDTO } from '../../model/ElementaryTaskDTO.model';
 import { ElementarySubTaskDTO } from '../../model/ElementarySubTaskDTO.model';
 import { TagService } from '../../service/tag.service';
 import { ApiResponse } from '../../model/ApiResponse.model';
@@ -63,12 +61,7 @@ export class EditTaskComponent implements OnInit, OnDestroy {
         if(urlParts.includes('edit')){ 
           this.submitButtonText = "Edit";
           this.formDisabled = false;
-          this._route.data.subscribe({
-            next: ({task})=>{
-              this.currTask = task;
-              this.selectedList = this.service.getAvailableTagsForTask(this.currTask.task.id);
-            }
-          });
+          this.resolveData()
         }
         else if(urlParts.includes('create')) {
           this.submitButtonText = "Create";
@@ -76,15 +69,11 @@ export class EditTaskComponent implements OnInit, OnDestroy {
           this.currTask = {task: {id: -1, title: "", description: "", tags: []}, subTasks: []};
         } else {
           this.formDisabled = true;
-          this._route.data.subscribe({
-            next: ({task})=>{
-              this.currTask = task;
-              this.selectedList = this.service.getAvailableTagsForTask(this.currTask.task.id);
-            }
-          });
+          this.resolveData();
         }
       }
     });
+
     this.dropdownSettings = {
       idField: "id",
       textField: "name",
@@ -93,8 +82,23 @@ export class EditTaskComponent implements OnInit, OnDestroy {
       itemsShowLimit: 4,
       allowSearchFilter: true
     }
-    this.currTask.task.tags = this.selectedList;
     this.initForm();
+  }
+  resolveData(){
+    this._route.data.subscribe({
+      next: ({taskApiResponse})=>{
+        if(taskApiResponse.error){
+          this.isError = true;
+          this.error = taskApiResponse.error;
+        } else{
+          this.isError = false;
+          this.currTask = taskApiResponse.response;
+          console.log(this.currTask.task.tags);
+          this.selectedList = this.currTask.task.tags;
+          console.log(this.selectedList);
+        }
+      }
+    });
   }
   onAddSubTask(){
     this.subTasksForm.push(this.fb.group({
@@ -152,6 +156,7 @@ export class EditTaskComponent implements OnInit, OnDestroy {
       id:[this.currTask.task.id],
       title: [this.currTask.task.title, Validators.required],
       description: [this.currTask.task.description, Validators.required],
+      tags: [this.selectedList],
       subTasks: this.subTasksForm
     });
   }

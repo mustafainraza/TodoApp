@@ -1,6 +1,8 @@
 package com.demo.todo.service.impl;
 
+import com.demo.todo.dto.ElementarySubTaskDto;
 import com.demo.todo.dto.ElementaryTaskDto;
+import com.demo.todo.dto.TagDto;
 import com.demo.todo.dto.TaskDto;
 import com.demo.todo.model.Task;
 import com.demo.todo.repository.TagRepository;
@@ -26,22 +28,33 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public ApiResponse getAllTasks() {
-        return new ApiResponse(HttpStatus.OK.value(), SUCCESS_MESSAGE, taskRepository.findByParentIsNull());
+        return new ApiResponse(
+                HttpStatus.OK.value(),
+                SUCCESS_MESSAGE,
+                taskRepository.findByParentIsNull().stream()
+                    .map(this::mapTaskToDto)
+                    .toList()
+        );
     }
 
     @Override
     public ApiResponse getTask(Long id) {
         Optional<Task> taskOptional = taskRepository.findById(id);
         return taskOptional.map(task->{
-                    if(task.getParent()==null){
-                        List<Task> tasks = taskRepository.findSubTasks(id);
-                        tasks.add(task);
-                        return new ApiResponse(HttpStatus.OK.value(), SUCCESS_MESSAGE, tasks);
-                    } else {
-                        return new ApiResponse(HttpStatus.OK.value(), SUCCESS_MESSAGE, task);
-                    }
-                }
-        ).orElseGet(()->new ApiResponse(HttpStatus.NOT_FOUND.value(), "Task Not Found", null));
+            ElementaryTaskDto taskDto = mapTaskToDto(task);
+            if(task.getParent()==null){
+                List<ElementarySubTaskDto> tasksDto = taskRepository.findSubTasks(id).stream()
+                        .map(subTask->new ElementarySubTaskDto(
+                                subTask.getId(),
+                                subTask.getTitle(),
+                                subTask.getDescription()
+                        ))
+                        .toList();
+                return new ApiResponse(HttpStatus.OK.value(), SUCCESS_MESSAGE, new TaskDto(taskDto, tasksDto));
+            } else {
+                return new ApiResponse(HttpStatus.OK.value(), SUCCESS_MESSAGE, new TaskDto(taskDto, Collections.emptyList()));
+            }
+        }).orElseGet(()->new ApiResponse(HttpStatus.NOT_FOUND.value(), "Task Not Found", null));
     }
 
     @Override
@@ -88,7 +101,7 @@ public class TaskServiceImpl implements TaskService {
                 dto.getTask().getTags().stream()
                         .map(tagDto->tagRepository.findById(tagDto.getId()).get())
                         .collect(Collectors.toSet()));
-        Map<Long, ElementaryTaskDto> taskMap = new HashMap<>();
+        Map<Long, ElementarySubTaskDto> taskMap = new HashMap<>();
         dto.getSubTasks()
                 .forEach(subTask->{
                     Task newSubTask;
@@ -114,5 +127,12 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.save(task);
         return new ApiResponse(HttpStatus.CREATED.value(), SUCCESS_MESSAGE, true);
     }
-
+    private ElementaryTaskDto mapTaskToDto(Task task){
+        return new ElementaryTaskDto(
+                task.getId(), task.getTitle(), task.getDescription(),
+                task.getTags().stream()
+                        .map(tag->new TagDto(tag.getId(), tag.getName()))
+                        .collect(Collectors.toSet())
+        );
+    }
 }

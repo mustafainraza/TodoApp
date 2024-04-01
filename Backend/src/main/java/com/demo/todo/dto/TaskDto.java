@@ -15,5 +15,5 @@ import java.util.List;
 @Setter
 public class TaskDto {
     private ElementaryTaskDto task;
-    private List<ElementaryTaskDto> subTasks;
+    private List<ElementarySubTaskDto> subTasks;
 }
