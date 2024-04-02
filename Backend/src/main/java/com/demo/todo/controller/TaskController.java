@@ -38,7 +38,6 @@ public class TaskController {
 
 
     @DeleteMapping("/{id}")
-
     public ResponseEntity<ApiResponse> deleteTag(@PathVariable Long id){
         ApiResponse apiResponse = service.deleteTask(id);
         return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);
