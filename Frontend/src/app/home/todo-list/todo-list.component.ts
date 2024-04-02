@@ -47,6 +47,7 @@ export class TodoListComponent implements OnInit {
     this.filteredTask = this.toDoListService.tasks.filter(task=>(task.parentId === +this.routeId)); 
     this.tasks = [...this.filteredTask];    
   }
+  
 
   searchquery(query:string) {
     if(!query) {
