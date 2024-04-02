@@ -86,15 +86,15 @@ public class TaskServiceImpl implements TaskService {
         if(taskId != null && taskId>0L){
             Optional<Task> taskOptional = taskRepository.findById(taskId);
             if(taskOptional.isPresent()){
-                return saveTask(taskOptional.get(), taskDto);
+                return saveTask(taskOptional.get(), taskDto, true);
             }
         } else {
-            return saveTask(new Task(), taskDto);
+            return saveTask(new Task(), taskDto, false);
         }
         return new ApiResponse(HttpStatus.BAD_REQUEST.value(), "Cannot Save Or Edit", false);
     }
 
-    private ApiResponse saveTask(Task task, TaskDto dto){
+    private ApiResponse saveTask(Task task, TaskDto dto, boolean isEdit){
         task.setTitle(dto.getTask().getTitle());
         task.setDescription(dto.getTask().getDescription());
         task.setTags(
@@ -102,7 +102,10 @@ public class TaskServiceImpl implements TaskService {
                         .map(tagDto->tagRepository.findById(tagDto.getId()).get())
                         .collect(Collectors.toSet()));
         Map<Long, ElementarySubTaskDto> taskMap = new HashMap<>();
-        List<Task> prevSubTasks = taskRepository.findSubTasks(task.getId());
+        List<Task> prevSubTasks=new ArrayList<>();
+        if(isEdit){
+            prevSubTasks = taskRepository.findSubTasks(task.getId());
+        }
         dto.getSubTasks()
                 .forEach(subTask->{
                     Task newSubTask;
@@ -117,7 +120,7 @@ public class TaskServiceImpl implements TaskService {
                     newSubTask.setDescription(subTask.getDescription());
                     taskRepository.save(newSubTask);
                 });
-        if(!taskMap.isEmpty()){
+        if(isEdit && !taskMap.isEmpty()){
             for(Task prevSubTask: prevSubTasks){
                 if(!taskMap.containsKey(prevSubTask.getId())){
                     taskRepository.delete(prevSubTask);
