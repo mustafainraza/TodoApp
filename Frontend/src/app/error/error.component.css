@@ -1,0 +1,8 @@
+.screen-center{
+    width: 100vw;
+    height: 90vh;
+    margin: 40px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
