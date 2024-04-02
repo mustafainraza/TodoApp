@@ -11,9 +11,10 @@ import { ElementarySubTaskDTO } from '../../model/ElementarySubTaskDTO.model';
 import { TagService } from '../../service/tag.service';
 import { ApiResponse } from '../../model/ApiResponse.model';
 import { map, Subscription } from 'rxjs';
+import { ErrorComponent } from '../../error/error.component';
 @Component({
   standalone: true,
-  imports:[CommonModule, ReactiveFormsModule, NgMultiSelectDropDownModule],
+  imports:[ CommonModule, ReactiveFormsModule, NgMultiSelectDropDownModule, ErrorComponent],
   selector: 'app-edit-task',
   templateUrl: './edit-task.component.html',
   styleUrls: ['./edit-task.component.css']
@@ -93,7 +94,6 @@ export class EditTaskComponent implements OnInit, OnDestroy {
         } else{
           this.isError = false;
           this.currTask = taskApiResponse.response;
-          console.log(this.currTask);
           this.selectedList = this.currTask.task.tags;
         }
       }
@@ -140,7 +140,6 @@ export class EditTaskComponent implements OnInit, OnDestroy {
         description: subTaskControl.get("description")?.value
       })
     })
-    console.log(this.currTask.subTasks);
     this.service.saveTask(this.currTask).subscribe({
       next: (taskApiResponse: ApiResponse)=>{
         this.isError = false;
@@ -149,6 +148,7 @@ export class EditTaskComponent implements OnInit, OnDestroy {
       error: (errorApiResponse)=>{
         this.isError = true;
         this.error = errorApiResponse;
+        this.goBack();
       }
     })
   }

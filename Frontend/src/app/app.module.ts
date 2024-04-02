@@ -11,22 +11,20 @@ import { TagsComponent } from './tags/tags.component';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-   declarations: [
+   declarations: [	
       AppComponent,
       UserComponent,
       HeaderComponent,
-      TagsComponent
+      TagsComponent,
    ],
    imports: [
-	 BrowserModule,
-	 AppRoutingModule,
-	 SharedModule,
-	 HomeModule,
-    HttpClientModule
+      BrowserModule,
+      AppRoutingModule,
+      SharedModule,
+      HomeModule,
+      HttpClientModule
 	],
    providers: [],
-   bootstrap: [
-      AppComponent
-   ]
+   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
