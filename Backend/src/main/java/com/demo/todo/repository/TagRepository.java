@@ -13,4 +13,5 @@ import java.util.List;
 public interface TagRepository extends JpaRepository<Tag, Long> {
     @Query("SELECT t FROM Task t JOIN t.tags tag WHERE tag.id = :tagId")
     List<Task> findTasksByTagId(@Param("tagId") Long tagId);
+
 }

@@ -1,5 +1,6 @@
 package com.demo.todo.repository;
 
+import com.demo.todo.model.Tag;
 import com.demo.todo.model.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +22,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             "OR t.description LIKE %:searchQuery% " +
             "OR tag.name LIKE %:searchQuery%")
     List<Task> searchTasks(@Param("searchQuery") String searchQuery);
+    
 }

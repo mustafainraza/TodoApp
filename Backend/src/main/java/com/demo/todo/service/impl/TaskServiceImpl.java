@@ -76,7 +76,9 @@ public class TaskServiceImpl implements TaskService {
     public ApiResponse search(String query) {
         return query.length()<4 ?
                 new ApiResponse(HttpStatus.NOT_ACCEPTABLE.value(), "Query Too Small", null) :
-                new ApiResponse(HttpStatus.OK.value(), SUCCESS_MESSAGE, taskRepository.searchTasks(query));
+                new ApiResponse(HttpStatus.OK.value(), SUCCESS_MESSAGE, taskRepository.searchTasks(query).stream()
+                        .map(this::mapTaskToDto)
+                        .toList());
     }
 
     @Override
