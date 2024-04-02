@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { EditTaskComponent } from './edit-task/edit-task.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { ErrorComponent } from '../error/error.component';
 
 @NgModule({
-  imports: [EditTaskComponent],
-  exports:[EditTaskComponent]
+  imports: [ EditTaskComponent ],
+  exports:[ EditTaskComponent ]
 })
 export class SharedModule { }

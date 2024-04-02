@@ -4,12 +4,9 @@ import { Task } from '../../../model/Task.model';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  standalone:true,
   selector: 'app-todo-selected-list-item',
   templateUrl: './todo-selected-list-item.component.html',
-  styleUrls: ['./todo-selected-list-item.component.css'],
-  imports: [ RouterModule]
-  
+  styleUrls: ['./todo-selected-list-item.component.css']
 })
 export class TodoSelectedListItemComponent implements OnInit {
 

@@ -1,19 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Task } from '../../model/Task.model';
-import { TodoListService } from '../../service/todo-list.service'
-import { CommonModule } from '@angular/common';
+import { TodoListService } from '../../service/todo-list.service';
 import { map, Subscription } from 'rxjs';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { TodoSelectedListItemComponent } from './todo-selected-list-item/todo-selected-list-item.component';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiResponse } from '../../model/ApiResponse.model';
 import { ElementaryTaskDTO } from '../../model/ElementaryTaskDTO.model';
 
 @Component({
-  standalone: true,
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
-  styleUrls: ['./todo-list.component.css'],
-  imports: [CommonModule,RouterModule,TodoSelectedListItemComponent]
+  styleUrls: ['./todo-list.component.css']
 })
 export class TodoListComponent implements OnInit {
 
@@ -26,7 +22,7 @@ export class TodoListComponent implements OnInit {
   error: any;
   private subscriptions: Subscription[]=[];
 
-  constructor(private router:Router ,private toDoListService: TodoListService, private activatedRoute:ActivatedRoute) {}
+  constructor(private router:Router ,private toDoListService: TodoListService, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
     this.subscriptions.push(

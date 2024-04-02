@@ -1,8 +1,4 @@
-<div class="container" *ngIf="isError">
-  <div class="col-xs-12">
-    {{ error.message }}
-  </div>
-</div>
+<app-error [isError]="isError" [error]="error"></app-error>
 <div class="container" *ngIf="!isError">
   <app-todo-selected-list-item *ngIf="routeId && selectedTask" [task_id]="routeId"></app-todo-selected-list-item>
   <br><br>  

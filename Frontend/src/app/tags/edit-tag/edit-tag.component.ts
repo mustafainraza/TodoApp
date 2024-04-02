@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Tag } from '../../model/Tag.model';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Route, Router, UrlSegment } from '@angular/router';
+import { ActivatedRoute,  Router, UrlSegment } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TagService } from '../../service/tag.service';
 import { ApiResponse } from '../../model/ApiResponse.model';
+import { ErrorComponent } from '../../error/error.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ErrorComponent ],
   selector: 'app-edit-tag',
   templateUrl: './edit-tag.component.html',
   styleUrls: ['./edit-tag.component.css']
@@ -66,7 +67,6 @@ export class EditTagComponent implements OnInit {
     this.tagService.sendSaveTagRequest(this.currTag).subscribe({
       next: (tag: ApiResponse)=> {
         this.isShowError = false;
-        console.log(tag);
         this.goBack();
       },
       error: error=>{

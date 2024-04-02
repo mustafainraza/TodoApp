@@ -1,6 +1,4 @@
-<div class="container">
-  <div class="col-xs-12" *ngIf="isError">{{ error.message }}</div>
-</div>
+<app-error [isError]="isError" [error]="error"></app-error>
 <div class="container" *ngIf="!isError">
   <h2 class="text-center mb-4">TAGS</h2>
   <ul class="list-group">
