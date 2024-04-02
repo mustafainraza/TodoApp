@@ -39,10 +39,10 @@ public class UserController {
         return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);
     }
 
-    @PatchMapping("/")
-    public ResponseEntity<ApiResponse> editUser(@RequestBody UserDto userDto) {
-        ApiResponse apiResponse = service.editUser(userDto);
-        return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);
-    }
+    // @PatchMapping("/")
+  //  public ResponseEntity<ApiResponse> editUser(@RequestBody UserDto userDto) {
+    //    ApiResponse apiResponse = service.editUser(userDto);
+     //   return ResponseEntity.status(apiResponse.getCode()).body(apiResponse);
+   // }
 
 }

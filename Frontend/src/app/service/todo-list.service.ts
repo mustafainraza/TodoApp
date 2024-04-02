@@ -30,9 +30,8 @@ export class TodoListService {
     return this._tasks[id-1];
   }
   
-  deleteTask(id: number) {
-    this._tasks = this._tasks.filter(task => (task.id !== id || task.parentId !== id));
-    this.tasksSubject.next([...this._tasks]);
+  deleteTask(id: number):Observable<ApiResponse> {
+    return this.http.delete<ApiResponse>(this.serviceUrl+id);
   }
 
   getTaskById(id: number): Observable<ApiResponse>{
@@ -43,6 +42,9 @@ export class TodoListService {
   }
   getAllTasks(): Observable<ApiResponse>{
     return this.http.get<ApiResponse>(this.serviceUrl);
+  }
+  getSearchTask(query:string): Observable<ApiResponse>{
+    return this.http.get<ApiResponse>(this.serviceUrl+ 'search?query=' + query);
   }
 }
 
