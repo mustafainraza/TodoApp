@@ -49,6 +49,7 @@
                 (onSelectAll)="onSelectAll($event)"
                 (onDeSelect)="onDropDownItemDeSelect($event)"
                 formControlName="tags"
+                [disabled]="formDisabled"
               >
               </ng-multiselect-dropdown>
             </div>

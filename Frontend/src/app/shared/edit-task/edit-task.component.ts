@@ -159,7 +159,7 @@ export class EditTaskComponent implements OnInit, OnDestroy {
       id:[this.currTask.task.id],
       title: [this.currTask.task.title, Validators.required],
       description: [this.currTask.task.description, Validators.required],
-      tags: [{value: this.selectedList, disabled: this.formDisabled}],
+      tags: [this.selectedList],
       subTasks: this.subTasksForm
     });
   }
