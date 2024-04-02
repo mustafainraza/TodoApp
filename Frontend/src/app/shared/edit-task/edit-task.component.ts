@@ -93,9 +93,8 @@ export class EditTaskComponent implements OnInit, OnDestroy {
         } else{
           this.isError = false;
           this.currTask = taskApiResponse.response;
-          console.log(this.currTask.task.tags);
+          console.log(this.currTask);
           this.selectedList = this.currTask.task.tags;
-          console.log(this.selectedList);
         }
       }
     });
@@ -120,17 +119,20 @@ export class EditTaskComponent implements OnInit, OnDestroy {
   }
   onDropDownItemSelect(item: any){
     const incomingTag: Tag = {id: item.id, name: item.name};
-    const currTag: Tag[] = this.currTask.task.tags.filter((tag: Tag)=>tag.id = incomingTag.id);
-    if(currTag.length === 0) this.currTask.task.tags.push(incomingTag);
-    else currTag[0] = incomingTag;
+    this.currTask.task.tags.push(incomingTag);
+  }
+  onDropDownItemDeSelect(item: any){
+    const incomingTag: Tag = {id: item.id, name: item.name};
+    this.currTask.task.tags = this.currTask.task.tags.filter(tag=>tag.id !== incomingTag.id);
   }
   onSelectAll(items: any){
     const incomingList: Tag[] = items.map((item: any)=>({id: item.id, name: item.name}));
     this.currTask.task.tags = incomingList;
   }
-  onSubmit(){
+  onSubmit(){  
     this.currTask.task.title = this.taskForm.get('title')?.value;
     this.currTask.task.description = this.taskForm.get('description')?.value;
+    this.currTask.subTasks = [];
     this.subTasksForm.controls.forEach((subTaskControl)=>{
       this.currTask.subTasks.push({
         id: subTaskControl.get("id")?.value,
@@ -138,6 +140,7 @@ export class EditTaskComponent implements OnInit, OnDestroy {
         description: subTaskControl.get("description")?.value
       })
     })
+    console.log(this.currTask.subTasks);
     this.service.saveTask(this.currTask).subscribe({
       next: (taskApiResponse: ApiResponse)=>{
         this.isError = false;
@@ -156,7 +159,7 @@ export class EditTaskComponent implements OnInit, OnDestroy {
       id:[this.currTask.task.id],
       title: [this.currTask.task.title, Validators.required],
       description: [this.currTask.task.description, Validators.required],
-      tags: [this.selectedList],
+      tags: [{value: this.selectedList, disabled: this.formDisabled}],
       subTasks: this.subTasksForm
     });
   }

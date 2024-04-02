@@ -102,6 +102,7 @@ public class TaskServiceImpl implements TaskService {
                         .map(tagDto->tagRepository.findById(tagDto.getId()).get())
                         .collect(Collectors.toSet()));
         Map<Long, ElementarySubTaskDto> taskMap = new HashMap<>();
+        List<Task> prevSubTasks = taskRepository.findSubTasks(task.getId());
         dto.getSubTasks()
                 .forEach(subTask->{
                     Task newSubTask;
@@ -117,7 +118,6 @@ public class TaskServiceImpl implements TaskService {
                     taskRepository.save(newSubTask);
                 });
         if(!taskMap.isEmpty()){
-            List<Task> prevSubTasks = taskRepository.findSubTasks(task.getId());
             for(Task prevSubTask: prevSubTasks){
                 if(!taskMap.containsKey(prevSubTask.getId())){
                     taskRepository.delete(prevSubTask);
