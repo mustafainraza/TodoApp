@@ -15,6 +15,7 @@ table, .searchbar {
   padding: 6px 10px;
   border-radius: 7px;
   font-size: 13px;
+  margin: 5px;
 }
 
 .tag-column {
