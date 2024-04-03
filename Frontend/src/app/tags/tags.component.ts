@@ -2,10 +2,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Tag } from '../model/Tag.model';
 import { TagService } from '../service/tag.service';
 import { map, Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ApiResponse } from '../model/ApiResponse.model';
+import { CommonModule } from '@angular/common';
+import { ErrorComponent } from '../error/error.component';
 
 @Component({
+  standalone: true,
+  imports: [CommonModule, RouterModule, ErrorComponent],
   selector: 'app-tags',
   templateUrl: './tags.component.html',
   styleUrls: ['./tags.component.css']

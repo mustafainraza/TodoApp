@@ -7,15 +7,13 @@ import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
 import { UserComponent } from './user/user.component';
 import { HeaderComponent } from './Header/Header.component';
-import { TagsComponent } from './tags/tags.component';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
    declarations: [	
       AppComponent,
       UserComponent,
-      HeaderComponent,
-      TagsComponent,
+      HeaderComponent
    ],
    imports: [
       BrowserModule,

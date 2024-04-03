@@ -73,10 +73,10 @@ export class TodoListComponent implements OnInit {
   }
 
   viewTask(id: number) {
-    this.router.navigate(["/" + id]);
+    this.router.navigate(["/task/" + id]);
   }
   addNewTask() {
-    this.router.navigate(["/create"]);
+    this.router.navigate(["/task/create"]);
   }
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
