@@ -10,7 +10,10 @@
       <label for="search" class="col-form-label">  Search {{ !(selectedTask && routeId) ? 'Tasks': 'Subtasks' }}</label>
     </div>
     <div class="col-auto">
-      <input #search type="text" class="form-control" (input)="searchquery(search.value)">
+      <input #search type="text" class="form-control" (keyup.enter)="searchquery(search.value)">
+    </div>
+    <div class="col-auto">
+      <button type="button" class="btn btn-primary" (click)="searchquery(search.value)">Search</button>
     </div>
   </div>
 

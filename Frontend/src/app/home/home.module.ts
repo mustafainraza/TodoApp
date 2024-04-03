@@ -10,7 +10,7 @@ import { TodoSelectedListItemComponent } from './todo-list/todo-selected-list-it
    declarations: [
       HomeComponent,
       TodoListComponent,
-      TodoSelectedListItemComponent
+      TodoSelectedListItemComponent,  
    ],
    imports: [ 
       CommonModule,
