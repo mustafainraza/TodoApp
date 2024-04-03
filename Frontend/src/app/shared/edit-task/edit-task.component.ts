@@ -33,6 +33,7 @@ export class EditTaskComponent implements OnInit, OnDestroy {
   error: ApiResponse = {code: 0, message: "", response: null};
   subscriptions: Subscription[] = [];
   newSubTaskIds: number = -1;
+  subTaskEditStatuses: { [key: number]: boolean } = {};
   constructor(
     private _route: ActivatedRoute, 
     private fb: FormBuilder, 
@@ -106,16 +107,26 @@ export class EditTaskComponent implements OnInit, OnDestroy {
       description: ["", Validators.required]
     }));
     this.showSubTasks = "Hide";
+    this.subTaskEditStatuses[this.subTasksForm.length] = false;
     this.newSubTaskIds--;
+    
   }
   onRemoveSubTask(index: number){
     this.subTasksForm.removeAt(index)
+    delete this.subTaskEditStatuses[index]
   }
   onChangeSubTaskVisibility(){
     this.showSubTasks = this.showSubTasks==="Show" ? "Hide": "Show";
   }
   goBack(){
     this._router.navigate(["/"]);
+  }
+  editSubTask(index: number){
+    this.subTaskEditStatuses[index] = !this.subTaskEditStatuses[index];
+  }
+  isReadOnly(index: number): boolean{
+
+    return this.formDisabled || !this.subTaskEditStatuses[index]
   }
   onDropDownItemSelect(item: any){
     const incomingTag: Tag = {id: item.id, name: item.name};
@@ -154,7 +165,12 @@ export class EditTaskComponent implements OnInit, OnDestroy {
   }
 
   private initForm(){
-    this.subTasksForm = this.fb.array(this.currTask.subTasks.map((task: ElementarySubTaskDTO)=> this.createTaskFormGroup(task)));
+    let index: number = 0;
+    this.subTasksForm = this.fb.array(this.currTask.subTasks.map((task: ElementarySubTaskDTO)=> {
+      this.subTaskEditStatuses[index] = false;
+      index++;
+      return this.createTaskFormGroup(task);
+    }));
     this.taskForm = this.fb.group({
       id:[this.currTask.task.id],
       title: [this.currTask.task.title, Validators.required],

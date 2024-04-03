@@ -34,7 +34,7 @@
           <td (click)="viewTask(task.id)"> {{ task.description }}</td>
           <td (click)="viewTask(task.id)">
             <div class="tag-list">
-              <span class="tag">{{ task.tags[0].name }}</span>
+              <span class="tag" *ngFor="let tag of task.tags">{{ tag.name }}</span>
             </div>
           </td>
           <td>

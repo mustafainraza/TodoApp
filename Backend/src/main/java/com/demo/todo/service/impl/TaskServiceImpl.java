@@ -103,11 +103,13 @@ public class TaskServiceImpl implements TaskService {
                         .collect(Collectors.toSet()));
         Map<Long, ElementarySubTaskDto> taskMap = new HashMap<>();
         List<Task> prevSubTasks=new ArrayList<>();
+        Map<Long, String> incomingIds = new HashMap<>();
         if(isEdit){
             prevSubTasks = taskRepository.findSubTasks(task.getId());
         }
         dto.getSubTasks()
                 .forEach(subTask->{
+                    incomingIds.put(subTask.getId(), subTask.getTitle());
                     Task newSubTask;
                     if(subTask.getId()==null || subTask.getId()<0L){
                         newSubTask = new Task();
@@ -120,10 +122,15 @@ public class TaskServiceImpl implements TaskService {
                     newSubTask.setDescription(subTask.getDescription());
                     taskRepository.save(newSubTask);
                 });
-        if(isEdit && !taskMap.isEmpty()){
-            for(Task prevSubTask: prevSubTasks){
-                if(!taskMap.containsKey(prevSubTask.getId())){
-                    taskRepository.delete(prevSubTask);
+        if(isEdit){
+            prevSubTasks.stream()
+                    .filter(prevSubTask->!incomingIds.containsKey(prevSubTask.getId()))
+                    .forEach(prevSubTask->taskRepository.delete(prevSubTask));
+            if(!taskMap.isEmpty()){
+                for(Task prevSubTask: prevSubTasks){
+                    if(!taskMap.containsKey(prevSubTask.getId())){
+                        taskRepository.delete(prevSubTask);
+                    }
                 }
             }
         }
