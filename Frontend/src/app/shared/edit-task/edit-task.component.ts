@@ -91,7 +91,7 @@ export class EditTaskComponent implements OnInit, OnDestroy {
         if(taskApiResponse.error){
           this.isError = true;
           this.error = taskApiResponse.error;
-        } else{
+        } else {
           this.isError = false;
           this.currTask = taskApiResponse.response;
           this.selectedList = this.currTask.task.tags;
